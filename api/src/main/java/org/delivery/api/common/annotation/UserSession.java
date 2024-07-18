@@ -8,7 +8,7 @@ import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Service;
 
 @Service
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserSession {
     @AliasFor(annotation = Service.class)
