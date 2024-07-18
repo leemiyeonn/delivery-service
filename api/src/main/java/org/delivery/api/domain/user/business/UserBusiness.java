@@ -24,17 +24,11 @@ public class UserBusiness {
 
     public UserResponse register(UserRegisterRequest request) {
 
-//        var entity = userConverter.toEntity(request);
-//        var newEntity = userService.register(entity);
-//        var response = userConverter.toResponse(newEntity);
-//        return response;
-
         return Optional.ofNullable(request)
             .map(userConverter::toEntity)
             .map(userService::register)
             .map(userConverter::toResponse)
             .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT, "request null"));
-
     }
 
     public TokenResponse login(UserLoginRequest request) {
