@@ -1,5 +1,7 @@
 package org.delivery.api.domain.storemenu.converter;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.delivery.api.common.annotation.Converter;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
@@ -47,6 +49,13 @@ public class StoreMenuConverter {
                             ;
                 })
                 .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT));
+    }
+
+    // 리스트 처리
+    public List<StoreMenuResponse> toResponseList(List<StoreMenuEntity> storeMenuEntities) {
+        return storeMenuEntities.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
 }
