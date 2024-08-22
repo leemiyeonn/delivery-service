@@ -2,6 +2,7 @@ package org.delivery.api.domain.token.business;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.common.annotation.Business;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
@@ -11,6 +12,7 @@ import org.delivery.api.domain.token.service.TokenService;
 import org.delivery.db.BaseEntity;
 import org.delivery.db.user.UserEntity;
 
+@Slf4j
 @Business
 @RequiredArgsConstructor
 public class TokenBusiness {
@@ -23,8 +25,11 @@ public class TokenBusiness {
         return Optional.ofNullable(userEntity)
                 .map(BaseEntity::getId)
                 .map(userId -> {
+                    log.info("Issuing tokens for userId: {}", userId);
+
                     var accessToken = tokenService.issueAccessToken(userId);
                     var refreshToken = tokenService.issueRefreshToken(userId);
+
                     return tokenConverter.toResponse(accessToken, refreshToken);
                 })
                 .orElseThrow(

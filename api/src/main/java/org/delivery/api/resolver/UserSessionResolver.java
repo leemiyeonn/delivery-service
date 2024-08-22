@@ -38,7 +38,14 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
 
         // RequestContextHolder 에서 현재 요청의 속성 가져오기
         var requestContext = RequestContextHolder.getRequestAttributes();
+        if (requestContext == null) {
+            throw new IllegalStateException("Request context is not available");
+        }
+
         var userId = requestContext.getAttribute("userId", RequestAttributes.SCOPE_REQUEST);
+        if (userId == null) {
+            throw new IllegalStateException("User ID is not available in request context");
+        }
 
         // userId를 이용해 UserService 에서 사용자 정보 가져 오기, userId는 Long 타입 으로 변환
         var userEntity = userService.getUserWithThrow(Long.parseLong(userId.toString()));
